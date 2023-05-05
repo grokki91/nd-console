@@ -1,0 +1,29 @@
+{
+  "name": "nd-console",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "current": "./date.js",
+    "add": "./date.js",
+    "sub": "./date.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grokki91/nd-console.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grokki91/nd-console/issues"
+  },
+  "homepage": "https://github.com/grokki91/nd-console#readme",
+  "dependencies": {
+    "moment": "^2.29.4",
+    "yargs": "^17.7.2"
+  }
+}
