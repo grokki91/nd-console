@@ -1,48 +1,49 @@
 #!/usr/bin/env node
-
-const yargs = require('yargs/yargs');
-const {hideBin} = require('yargs/helpers');
 const moment = require('moment');
+const yargs = require('yargs/yargs');
+const arg = yargs.hideBin(process.argv);
+const digit = arg[2];
+const dateFlag = (arg.includes('--date') || arg.includes('-d'));
+const monthFlag = (arg.includes('--month') || arg.includes('-m'));
+const yearFlag = (arg.includes('--year') || arg.includes('-y'));
+const isDate = digit && dateFlag;
+const isMonth = digit && monthFlag;
+const isYear = digit && yearFlag;
 
-yargs(hideBin(process.argv))
-    .option('year', {
-        alias: 'y',
-        type: 'string',
-        description: 'Get year'
-    })
-    .option('month', {
-        alias: 'm',
-        type: 'string',
-        description: 'Get month'
-    })
-    .option('date', {
-        alias: 'd',
-        type: 'string',
-        description: 'Get date'
-    })
-    .argv;
-
-
-const argv = yargs.hideBin(process.argv);
-const digit = argv[1];
-
-// Current date
-argv.find(command => {
-    if (command === '--year' || command === '--y') {
-        console.log(moment().format('YYYY'))
-    } else if ((command === '--month' || command === '--m') && !digit) {
-        console.log(moment().format('MM'));
-    } else if (command === '--date' || command === '--d') {
+const argv = require('yargs')
+  .command('current', '', function(yargs) {
+    if (dateFlag) {
         console.log(moment().format('DD-MM-YYYY'));
+    } else if (monthFlag) {
+        console.log(moment().month());
+    } else if (yearFlag) {
+        console.log(moment().format('YYYY'));
+    } else if (arg.length === 1) {
+        console.log(moment().toISOString());
     }
-})
-
-argv.find(command => {
-    if (command === '-d' && digit) {
-        const finalDate = moment().add(digit, 'days').toISOString();
-        console.log(finalDate);
-    } else if (command === '--month' && digit) {
-        const finalMonth = moment().add(digit, 'months').toISOString();
-        console.log(finalMonth);
+  })
+  .command('add', '', function(yargs) {
+    if (isDate) {
+        console.log(moment().add(digit, 'days').toISOString());
+    } else if (isMonth) {
+        console.log(moment().add(digit, 'months').toISOString());
+    } else if (isYear) {
+        console.log(moment().add(digit, 'years').toISOString());
     }
-})
+  })
+  .command('sub', '', function(yargs) {
+    if (isDate) {
+        console.log(moment().subtract(digit, 'days').toISOString());
+    } else if (isMonth) {
+        console.log(moment().subtract(digit, 'months').toISOString());
+    } else if (isYear) {
+        console.log(moment().subtract(digit, 'years').toISOString());
+    }
+  }).option('year', {
+    alias: 'y',
+  }).option('month', {
+    alias: 'm'
+  }).option('date', {
+    alias: 'd'
+  })
+  .argv;
